@@ -720,7 +720,23 @@ function waterOpen() {
 
     function ouvrirEau() {
         isOpened = !isOpened;
-        water.style.height = isOpened ? '95px' : '0';
+
+        // water.style.height = isOpened ? '95px' : '0';        // version fonctionne mais a partir de la deuxieme fois
+
+        if (isOpened) {
+        water.style.height = '0';   // garantie de start
+
+
+        // pour l'animation doucement
+        // La fonction requestAnimationFrame() force le navigateur à afficher d'abord l'état actuel,
+        // puis à animer le changement suivant.
+        requestAnimationFrame(() => {              
+            water.style.height = '95px';
+        });
+        
+        } else {
+            water.style.height = '0';
+        };
     }
 
     buttonOuvrir.addEventListener('click', () => {
@@ -787,8 +803,9 @@ document.querySelectorAll('.placard').forEach(placard => {
     const input = placard.querySelector('.search-bars input');
     const form = placard.querySelector('.search-bars form');
 
-        
-
+    if (!input || !form){     
+        return;
+    };     // ❗ S'il n'y a pas de barre de recherche sur ce placard, quittez.
 
 
     input.addEventListener('input', () => {
